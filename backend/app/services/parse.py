@@ -45,7 +45,7 @@ def process_html_content(base_url: str, html: str) -> str:
         if 'srcset' in img.attrs and not img['srcset'].startswith(('http', 'https')):
             img['srcset'] = urljoin(base_url, img['srcset'])
 
-    # Handle figures (e.g., NYTimes)
+    # Handle figures
     for figure in soup.find_all('figure'):
         srcset_img = None
         for source in figure.find_all('source'):
@@ -66,11 +66,9 @@ def process_html_content(base_url: str, html: str) -> str:
     for script in soup.find_all('script'):
         script.extract()
 
-    # Remove aside elements
     for aside in soup.find_all('aside'):
         aside.decompose()
 
-    # Fix slideshow links
     for anchor in soup.find_all('a', href=True):
         if anchor['href'].startswith('/picture-gallery'):
             anchor['href'] = urljoin(base_url, anchor['href'])

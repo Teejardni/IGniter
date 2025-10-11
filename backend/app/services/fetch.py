@@ -23,18 +23,12 @@ def get_user_agent(url: str) -> str:
         logger.info(f"Using Generic user agent for blocked site: {clean_url}")
         return settings.USER_AGENT_GENERIC
     
-    # Default to Twitterbot (works for most paywalls)
+    # Default to Twitterbot
     logger.info(f"Using Twitterbot user agent for: {clean_url}")
     return settings.USER_AGENT_TWITTERBOT
 
 async def fetch_html(url: str, retry_with_different_ua: bool = True) -> str:
-    """
-    Fetch HTML content from a URL with paywall bypass.
     
-    Args:
-        url: The URL to fetch
-        retry_with_different_ua: If True, retry with a different UA on failure
-    """
     user_agent = get_user_agent(url)
     
     headers = {
@@ -78,7 +72,6 @@ async def fetch_html(url: str, retry_with_different_ua: bool = True) -> str:
                 return content.decode(errors="replace")
     
     except (httpx.HTTPStatusError, httpx.HTTPError) as e:
-        # Retry with Googlebot if initial fetch failed and we haven't tried it yet
         if retry_with_different_ua and user_agent != settings.USER_AGENT_GOOGLEBOT:
             logger.warning(f"Initial fetch failed: {e}. Retrying with Googlebot UA...")
             headers["User-Agent"] = settings.USER_AGENT_GOOGLEBOT

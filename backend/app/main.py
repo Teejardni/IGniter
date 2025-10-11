@@ -5,12 +5,12 @@ from .services.fetch import preview_from_url
 from .core.settings import settings
 import httpx
 import logging
-from opentelemetry import trace
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.resources import Resource
-from opentelemetry.sdk.trace.export import BatchSpanProcessor
-from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
-from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+# from opentelemetry import trace
+# from opentelemetry.sdk.trace import TracerProvider
+# from opentelemetry.sdk.resources import Resource
+# from opentelemetry.sdk.trace.export import BatchSpanProcessor
+# from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+# from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -25,21 +25,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Optional OpenTelemetry setup
-if settings.ENABLE_OTEL:
-    logger.info("OpenTelemetry enabled. Setting up tracing.")
-    try:
-        resource = Resource(attributes={"service.name": "url-previewer-api"})
-        provider = TracerProvider(resource=resource)
-        exporter = OTLPSpanExporter()
-        span_processor = BatchSpanProcessor(exporter)
-        provider.add_span_processor(span_processor)
-        trace.set_tracer_provider(provider)
-        FastAPIInstrumentor.instrument_app(app)
-        logger.info("OpenTelemetry tracing enabled successfully.")
-    except Exception as e:
-        logger.error(f"Failed to initialize OpenTelemetry tracing: {e}", exc_info=True)
-        logger.warning("OpenTelemetry tracing disabled due to initialization error.")
+# if settings.ENABLE_OTEL:
+#     logger.info("OpenTelemetry enabled. Setting up tracing.")
+#     try:
+#         resource = Resource(attributes={"service.name": "url-previewer-api"})
+#         provider = TracerProvider(resource=resource)
+#         exporter = OTLPSpanExporter()
+#         span_processor = BatchSpanProcessor(exporter)
+#         provider.add_span_processor(span_processor)
+#         trace.set_tracer_provider(provider)
+#         FastAPIInstrumentor.instrument_app(app)
+#         logger.info("OpenTelemetry tracing enabled successfully.")
+#     except Exception as e:
+#         logger.error(f"Failed to initialize OpenTelemetry tracing: {e}", exc_info=True)
+#         logger.warning("OpenTelemetry tracing disabled due to initialization error.")
 
 @app.post("/api/preview", response_model=PreviewResponse, responses={400: {"model": ErrorResponse}, 503: {"model": ErrorResponse}, 504: {"model": ErrorResponse}})
 async def preview(payload: PreviewRequest):
