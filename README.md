@@ -1,5 +1,5 @@
 # IGniter
 
-> **Igniting access.**
+**Igniting access.**
 
 
