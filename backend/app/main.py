@@ -15,7 +15,7 @@ from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="URL Previewer API", version="2.0.0")
+app = FastAPI(title="IGniter", version="2.0.1")
 
 app.add_middleware(
     CORSMiddleware,
