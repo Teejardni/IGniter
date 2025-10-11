@@ -3,7 +3,7 @@ name = "IGniter-backend"
 version = "2.0.1"
 description = "The backend for IGniter"
 readme = "README.md"
-requires-python = "<3.14"
+requires-python = ">=3.13,<3.14"
 dependencies = [
     "beautifulsoup4~=4.13.4",
     "brotli~=1.1.0",

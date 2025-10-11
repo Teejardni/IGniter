@@ -7,11 +7,17 @@ from pathlib import Path
 class Settings(BaseSettings):
     PORT: int = 8000
     ALLOWED_ORIGINS: List[str] = ["http://localhost:5173"]
+    
     USER_AGENT_TWITTERBOT: str = "Twitterbot/1.0"
+    USER_AGENT_GOOGLEBOT: str = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+    USER_AGENT_FACEBOOKBOT: str = "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)"
     USER_AGENT_GENERIC: str = "Mozilla/5.0 (PlayStation; PlayStation 5/6.50) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15"
+    USER_AGENT_CHROME: str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    
     HTTP_TIMEOUT_SECONDS: float = 12.0
     MAX_BYTES: int = 3_145_728  # ~3 MB
     BLOCKED_SITES_FILE: str = "app/blocked_sites.txt"
+    GOOGLEBOT_SITES_FILE: str = "app/googlebot_sites.txt"  # Sites that work better with Googlebot
     ENABLE_OTEL: bool = False
 
     @field_validator("ALLOWED_ORIGINS", mode="before")
@@ -40,17 +46,24 @@ class Settings(BaseSettings):
         env_nested_delimiter='__'
     )
 
-    @property
-    def BLOCKED_SITES(self) -> List[str]:
-        """Load blocked sites from file or return empty list if not found."""
+    def _load_sites_from_file(self, filename: str) -> List[str]:
+        """Helper method to load sites from a file."""
         try:
-            with open(self.BLOCKED_SITES_FILE, 'r', encoding='utf-8') as file:
-                return [line.strip() for line in file if line.strip()]
+            with open(filename, 'r', encoding='utf-8') as file:
+                return [line.strip() for line in file if line.strip() and not line.strip().startswith('#')]
         except FileNotFoundError:
-            print(f"Warning: {self.BLOCKED_SITES_FILE} not found. No sites will be treated as blocked.")
+            print(f"Warning: {filename} not found.")
             return []
         except IOError as e:
-            print(f"Error reading {self.BLOCKED_SITES_FILE}: {e}")
+            print(f"Error reading {filename}: {e}")
             return []
+
+    @property
+    def BLOCKED_SITES(self) -> List[str]:
+        return self._load_sites_from_file(self.BLOCKED_SITES_FILE)
+
+    @property
+    def GOOGLEBOT_SITES(self) -> List[str]:
+        return self._load_sites_from_file(self.GOOGLEBOT_SITES_FILE)
 
 settings = Settings()
