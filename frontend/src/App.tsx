@@ -32,7 +32,7 @@ export default function App() {
   return (
     <div className="min-h-screen p-6">
       <header className="max-w-2xl mx-auto mb-4">
-        <h1 className="text-2xl font-bold">URL Previewer</h1>
+        <h1 className="text-2xl font-bold">IGniter</h1>
         <p className="text-sm text-gray-600">Enter a URL to fetch title, description, image, site name, and full article content.</p>
       </header>
 

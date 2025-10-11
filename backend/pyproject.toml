@@ -1,20 +1,20 @@
 [project]
-name = "url-previewer-backend"
-version = "2.0.0"
-description = "The backend for url previewer"
+name = "IGniter-backend"
+version = "2.0.1"
+description = "The backend for IGniter"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.13,<3.14"
 dependencies = [
-    "beautifulsoup4>=4.13.4",
-    "brotli>=1.1.0",
-    "fastapi>=0.116.1",
-    "httpx>=0.28.1",
-    "lxml>=6.0.0",
-    "opentelemetry-api>=1.36.0",
-    "opentelemetry-exporter-otlp-proto-grpc>=1.36.0",
-    "opentelemetry-instrumentation-fastapi>=0.57b0",
-    "opentelemetry-sdk>=1.36.0",
-    "pydantic-settings>=2.10.1",
-    "python-dotenv>=1.1.1",
-    "uvicorn>=0.35.0",
+    "beautifulsoup4~=4.13.4",
+    "brotli~=1.1.0",
+    "fastapi~=0.116.1",
+    "httpx~=0.28.1",
+    "lxml~=6.0.0",
+    "opentelemetry-api~=1.36.0",
+    "opentelemetry-exporter-otlp-proto-grpc~=1.36.0",
+    "opentelemetry-instrumentation-fastapi~=0.57b0",
+    "opentelemetry-sdk~=1.36.0",
+    "pydantic-settings~=2.10.1",
+    "python-dotenv~=1.1.1",
+    "uvicorn~=0.35.0",
 ]
